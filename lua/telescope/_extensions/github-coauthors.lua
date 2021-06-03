@@ -8,7 +8,7 @@ local make_entry = require("telescope.make_entry")
 
 return require("telescope").register_extension {
   export = {
-    scripts = function(opts)
+    coauthors = function(opts)
       local results = utils.get_os_command_output({
         "git", "shortlog", "--summary", "--numbered", "--email", "--all"
       }, opts.cwd)
