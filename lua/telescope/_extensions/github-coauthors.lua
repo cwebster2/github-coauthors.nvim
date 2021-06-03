@@ -17,10 +17,10 @@ return require("telescope").register_extension {
         prompt_title = 'Git Coauthors',
         finder = finders.new_table {
           results = results,
-          entry_maker = opts.entry_maker or make_entry.gen_from_git_commits(opts),
+          --entry_maker = opts.entry_maker or make_entry.gen_from_git_commits(opts),
         },
-        previewer = previewers.git_commit_diff.new(opts),
-        sorter = conf.file_sorter(opts),
+        --previewer = previewers.git_commit_diff.new(opts),
+        sorter = conf.get_generic_fuzzy_sorter(),
         -- attach_mappings = function()
         --   actions.select_default:replace(actions.git_checkout)
         --   return true
