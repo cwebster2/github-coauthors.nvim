@@ -30,7 +30,6 @@ return require("telescope").register_extension {
         sorter = sorters.get_generic_fuzzy_sorter(),
         attach_mappings = function(prompt_bufnr, map)
           local insert_coauthors = function()
-            -- local selections = action_state.get_selected_entry()
             local picker = action_state.get_current_picker(prompt_bufnr)
             local selections = picker:get_multi_selection()
             if next(selections) == nil then
