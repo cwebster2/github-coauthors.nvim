@@ -7,6 +7,7 @@ local utils = require("telescope.utils")
 local conf = require("telescope.config").values
 local sorters = require("telescope.sorters")
 local make_entry = require("telescope.make_entry")
+local Job = require("plenary.job")
 
 --local previewers = require("github-coauthors.previewers")
 
@@ -23,8 +24,7 @@ local dropdown_opts = require('telescope.themes').get_dropdown({
   };
 })
 
-local get_coauthors = function() {
-  local Job = require("plenary.job")
+local get_coauthors = function()
   Job:new({
     command = "git",
     args = { "shortlog", "--summary", "--numbered", "--email", "--all" },
@@ -35,7 +35,7 @@ local get_coauthors = function() {
       print(j:result())
     end,
   }):start()
-}
+end
 
 function M.coauthors()
   get_coauthors()
