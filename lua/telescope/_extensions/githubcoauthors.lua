@@ -7,7 +7,7 @@ local sorters = require("telescope.sorters")
 local make_entry = require("telescope.make_entry")
 
 return require("telescope").register_extension {
-  export = {
+  exports = {
     coauthors = function(opts)
       local results = utils.get_os_command_output({
         "git", "shortlog", "--summary", "--numbered", "--email", "--all"
