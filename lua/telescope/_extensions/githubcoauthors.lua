@@ -9,6 +9,8 @@ local make_entry = require("telescope.make_entry")
 return require("telescope").register_extension {
   exports = {
     coauthors = function(opts)
+      opts = opts or {}
+      opts.cwd = opts.cwd or vim.fn.getcwd()
       local results = utils.get_os_command_output({
         "git", "shortlog", "--summary", "--numbered", "--email", "--all"
       }, opts.cwd)
