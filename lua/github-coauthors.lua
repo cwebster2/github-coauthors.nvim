@@ -24,21 +24,6 @@ local dropdown_opts = require('telescope.themes').get_dropdown({
   };
 })
 
-local get_coauthors = function()
-  Job:new({
-    command = "git",
-    args = { "shortlog", "--summary", "--numbered", "--email", "--all" },
-    --cwd,
-    --env,
-    on_exit = coauthor_results
-  }):start()
-end
-
-local coauthor_results = function(j, return_val)
-  print(return_val)
-  print(j:result())
-end,
-
 M.coauthors = function(opts)
   local results = utils.get_os_command_output({
     "git", "shortlog", "--summary", "--numbered", "--email", "--all"
