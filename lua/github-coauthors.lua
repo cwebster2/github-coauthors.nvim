@@ -30,15 +30,33 @@ local get_coauthors = function()
     args = { "shortlog", "--summary", "--numbered", "--email", "--all" },
     --cwd,
     --env,
-    on_exit = function(j, return_val)
-      print(return_val)
-      print(j:result())
-    end,
+    on_exit = coauthor_results
   }):start()
 end
 
-function M.coauthors()
-  get_coauthors()
+local coauthor_results = function(j, return_val)
+  print(return_val)
+  print(j:result())
+end,
+
+M.coauthors = function(opts)
+  local results = utils.get_os_command_output({
+    "git", "shortlog", "--summary", "--numbered", "--email", "--all"
+  }, opts.cwd)
+
+  pickers.new(opts, {
+    prompt_title = 'Git Coauthors',
+    finder = finders.new_table {
+      results = results,
+      entry_maker = opts.entry_maker or make_entry.gen_from_git_commits(opts),
+    },
+    previewer = previewers.git_commit_diff.new(opts),
+    sorter = conf.file_sorter(opts),
+    -- attach_mappings = function()
+    --   actions.select_default:replace(actions.git_checkout)
+    --   return true
+    -- end
+  }):find()
 end
 
 return M;
