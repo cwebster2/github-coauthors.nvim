@@ -22,7 +22,7 @@ return require("telescope").register_extension {
           --entry_maker = opts.entry_maker or make_entry.gen_from_git_commits(opts),
         },
         --previewer = previewers.git_commit_diff.new(opts),
-        sorter = conf.get_generic_fuzzy_sorter(),
+        sorter = sorters.get_generic_fuzzy_sorter(),
         -- attach_mappings = function()
         --   actions.select_default:replace(actions.git_checkout)
         --   return true
