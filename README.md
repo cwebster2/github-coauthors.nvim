@@ -6,7 +6,7 @@ and multiselect the results.
 
 ## Requirements
 
-- Neovim (>= 0.5 (nightly releases))
+- Neovim (>= 0.5)
 - Telescope
 
 ### Installation
