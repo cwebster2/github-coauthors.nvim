@@ -4,6 +4,7 @@ local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local utils = require("telescope.utils")
 local sorters = require("telescope.sorters")
+local make_entry = require("telescope.make_entry")
 local api = vim.api
 
 return require("telescope").register_extension {
@@ -12,21 +13,22 @@ return require("telescope").register_extension {
       opts = opts or {}
       opts.cwd = opts.cwd or vim.fn.getcwd()
 
-      -- get authors that have contributed to the current repo
-      local results = utils.get_os_command_output({
-        "git", "shortlog", "--summary", "--numbered", "--email", "--all"
-      }, opts.cwd)
+      local command = {"git", "log", "--pretty=%aN <%aE>"}
 
-      -- strip commit counts from the results
-      for k, r in ipairs(results) do
-        results[k] = r:match("^%s*%d+%s+(.*)$")
+      local seen = {};
+      local string_entry_maker = make_entry.gen_from_string()
+      opts.entry_maker = function(string)
+        if (not seen[string]) then
+          seen[string] = true
+          return string_entry_maker(string)
+        else
+          return nil
+        end
       end
 
       pickers.new(opts, {
         prompt_title = 'Git Coauthors',
-        finder = finders.new_table {
-          results = results,
-        },
+        finder = finders.new_oneshot_job(command, opts),
         sorter = sorters.get_generic_fuzzy_sorter(),
         attach_mappings = function(prompt_bufnr, map)
           local insert_coauthors = function()
